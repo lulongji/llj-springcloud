@@ -83,11 +83,11 @@
 
 
 		<!-- oracle-jdbc -->
-		<dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc14</artifactId>
-			<version>${oracle.drive.version}</version>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>com.oracle</groupId>-->
+			<!--<artifactId>ojdbc14</artifactId>-->
+			<!--<version>${oracle.drive.version}</version>-->
+		<!--</dependency>-->
 
 		<!-- 集成druid，使用连接池 -->
 		<dependency>
