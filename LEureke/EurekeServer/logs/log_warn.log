@@ -1,0 +1,8 @@
+[2019-01-18 11:25:30,672] [WARN ] - [restartedMain] [] [tk.mybatis.spring.mapper.ClassPathMapperScanner] [] - No MyBatis mapper was found in '[com.lu.EurekeServer]' package. Please check your configuration.
+				 
+[2019-01-18 11:25:30,704] [WARN ] - [restartedMain] [] [org.mybatis.spring.mapper.ClassPathMapperScanner] [] - No MyBatis mapper was found in '[com.lu.EurekeServer]' package. Please check your configuration.
+				 
+[2019-01-18 11:25:33,650] [WARN ] - [localhost-startStop-1] [] [com.netflix.config.sources.URLConfigurationSource] [] - No URLs will be polled as dynamic configuration sources.
+				 
+[2019-01-18 11:25:34,537] [WARN ] - [restartedMain] [] [org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext] [] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server; nested exception is org.springframework.boot.web.server.WebServerException: Unable to start embedded Tomcat
+				 
