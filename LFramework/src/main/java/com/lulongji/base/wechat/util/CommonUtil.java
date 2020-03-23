@@ -1,14 +1,12 @@
 package com.lulongji.base.wechat.util;
 
 import com.alibaba.fastjson.JSONObject;
-import com.lulongji.base.rl.common.RedisKeys;
 import com.lulongji.base.wechat.util.aes.AesException;
 import com.lulongji.base.wechat.util.aes.WXBizMsgCrypt;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -21,15 +19,13 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * Created by lu on 2017/2/13.
+ * @author lu
+ * @date 2017/2/13
  * <p>
  * Description:常用类
  */
+@Slf4j
 public class CommonUtil {
-    /**
-     * 日志
-     */
-    private static final Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 
     /**
      * 根据内容类型判断文件扩展名
@@ -107,9 +103,9 @@ public class CommonUtil {
             conn.disconnect();
             jsonObject = JSONObject.parseObject(buffer.toString());
         } catch (ConnectException ce) {
-            logger.error("连接超时：{}", ce);
+            log.error("连接超时：{}", ce);
         } catch (Exception e) {
-            logger.error("https请求异常：{}", e);
+            log.error("https请求异常：{}", e);
         }
         return jsonObject;
     }
@@ -172,20 +168,5 @@ public class CommonUtil {
         return crypt;
     }
 
-
-    public static StringBuilder getRedisKeys(String ytx1, String ytx2, String ytx3, String ytx4) {
-        return getRedisKeys(ytx1, ytx2, ytx3).append(ytx4);
-    }
-
-    public static StringBuilder getRedisKeys(String ytx1, String ytx2, String ytx3) {
-        return getRedisKeys(ytx1, ytx2).append(RedisKeys.ytx.REDIS_SEPARATOR_J).append(ytx3);
-    }
-
-    public static StringBuilder getRedisKeys(String ytx1, String ytx2) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(ytx1);
-        sb.append(ytx2);
-        return sb;
-    }
 
 }

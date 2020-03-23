@@ -1,15 +1,7 @@
-# SpringCloud
+# SpringCloud项目
 
-### LEureke
-注册中心
+### 聊天室（LChat）
 
-### LRibbon
 
-### LFeign
-
-### LZuul
-负载均衡
-
-### LConfig
-配置中心
+### 配置中心
 

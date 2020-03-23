@@ -12,7 +12,7 @@ public class CommonException extends Exception {
 
     private static final long serialVersionUID = 2797300151072458673L;
 
-    private String errCode = CommonConstants.ExceptionCode.EXCEPTION_CODE_ERROR;
+    private String errCode = CommonConstants.CommonCode._STRING_1;
 
     private String errMsg;
 
