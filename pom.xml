@@ -32,6 +32,12 @@
     <dependencies>
         <!-- eureka-client -->
         <dependency>
+            <groupId>com.lulongji</groupId>
+            <artifactId>framework-base</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <!-- eureka-client -->
+        <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
