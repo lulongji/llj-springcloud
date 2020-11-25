@@ -2,10 +2,6 @@
 - Springboot 版本 2.1.6.RELEASE
 - 
 
-# SpringCloud
-
-# SpringCloud Alibaba
-
 ### framework-base
 
 基础工具包
@@ -24,6 +20,12 @@
         <artifactId>framework-base</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </dependency>
+
+# SpringCloud
+
+# SpringCloud Alibaba
+
+
 
 ### 配置中心
 
