@@ -6,25 +6,15 @@ import java.io.Serializable;
 
 
 /**
+ * Return result set.
+ *
  * @author lu
  */
 public class Result implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    /**
-     * 状态码
-     */
     private String code;
-
-    /**
-     * 信息
-     */
     private String info;
-
-    /**
-     * 返回内容
-     */
     private Object result;
 
     public static Result success() {
@@ -34,22 +24,12 @@ public class Result implements Serializable {
         return result;
     }
 
-    /**
-     * @param result
-     * @return
-     * @desc 创建成功结果集
-     */
     public static Result success(Object result) {
         Result res = new Result(CommonConstants.ValType.SUCCESS_CODE, CommonConstants.ValType.SUCCESS_INFO);
         res.setResult(result);
         return res;
     }
 
-    /**
-     * 默认失败
-     *
-     * @return
-     */
     public static Result failure() {
         Result result = new Result();
         result.setCode(CommonConstants.ValType.FAILURE_CODE);

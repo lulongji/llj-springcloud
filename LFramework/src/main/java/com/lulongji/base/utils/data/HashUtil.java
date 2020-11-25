@@ -3,6 +3,7 @@ package com.lulongji.base.utils.data;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
+
 /**
  * This class contains function for hashing.
  * <p>
@@ -134,32 +135,32 @@ public final class HashUtil {
 
         c += length;
         switch (keylen) {
-        case 11:
-            c += (value[offset + 10]) << 24;
-        case 10:
-            c += (value[offset + 9] & 0xff) << 16;
-        case 9:
-            c += (value[offset + 8] & 0xff) << 8;
-        case 8:
-            b += word32At(value, offset + 4);
-            a += word32At(value, offset);
-            break;
-        case 7:
-            b += (value[offset + 6] & 0xff) << 16;
-        case 6:
-            b += (value[offset + 5] & 0xff) << 8;
-        case 5:
-            b += (value[offset + 4] & 0xff);
-        case 4:
-            a += word32At(value, offset);
-            break;
-        case 3:
-            a += (value[offset + 2] & 0xff) << 16;
-        case 2:
-            a += (value[offset + 1] & 0xff) << 8;
-        case 1:
-            a += (value[offset + 0] & 0xff);
-            // case 0 : nothing left to add
+            case 11:
+                c += (value[offset + 10]) << 24;
+            case 10:
+                c += (value[offset + 9] & 0xff) << 16;
+            case 9:
+                c += (value[offset + 8] & 0xff) << 8;
+            case 8:
+                b += word32At(value, offset + 4);
+                a += word32At(value, offset);
+                break;
+            case 7:
+                b += (value[offset + 6] & 0xff) << 16;
+            case 6:
+                b += (value[offset + 5] & 0xff) << 8;
+            case 5:
+                b += (value[offset + 4] & 0xff);
+            case 4:
+                a += word32At(value, offset);
+                break;
+            case 3:
+                a += (value[offset + 2] & 0xff) << 16;
+            case 2:
+                a += (value[offset + 1] & 0xff) << 8;
+            case 1:
+                a += (value[offset + 0] & 0xff);
+                // case 0 : nothing left to add
         }
         return mix32(a, b, c);
     }
@@ -240,55 +241,55 @@ public final class HashUtil {
 
         c += length;
         switch (keylen) {
-        case 23:
-            c += ((long) value[offset + 22]) << 56;
-        case 22:
-            c += (value[offset + 21] & 0xffL) << 48;
-        case 21:
-            c += (value[offset + 20] & 0xffL) << 40;
-        case 20:
-            c += (value[offset + 19] & 0xffL) << 32;
-        case 19:
-            c += (value[offset + 18] & 0xffL) << 24;
-        case 18:
-            c += (value[offset + 17] & 0xffL) << 16;
-        case 17:
-            c += (value[offset + 16] & 0xffL) << 8;
-        case 16:
-            b += word64At(value, offset + 8);
-            a += word64At(value, offset);
-            break;
-        case 15:
-            b += (value[offset + 14] & 0xffL) << 48;
-        case 14:
-            b += (value[offset + 13] & 0xffL) << 40;
-        case 13:
-            b += (value[offset + 12] & 0xffL) << 32;
-        case 12:
-            b += (value[offset + 11] & 0xffL) << 24;
-        case 11:
-            b += (value[offset + 10] & 0xffL) << 16;
-        case 10:
-            b += (value[offset + 9] & 0xffL) << 8;
-        case 9:
-            b += (value[offset + 8] & 0xffL);
-        case 8:
-            a += word64At(value, offset);
-            break;
-        case 7:
-            a += (value[offset + 6] & 0xffL) << 48;
-        case 6:
-            a += (value[offset + 5] & 0xffL) << 40;
-        case 5:
-            a += (value[offset + 4] & 0xffL) << 32;
-        case 4:
-            a += (value[offset + 3] & 0xffL) << 24;
-        case 3:
-            a += (value[offset + 2] & 0xffL) << 16;
-        case 2:
-            a += (value[offset + 1] & 0xffL) << 8;
-        case 1:
-            a += (value[offset + 0] & 0xffL);
+            case 23:
+                c += ((long) value[offset + 22]) << 56;
+            case 22:
+                c += (value[offset + 21] & 0xffL) << 48;
+            case 21:
+                c += (value[offset + 20] & 0xffL) << 40;
+            case 20:
+                c += (value[offset + 19] & 0xffL) << 32;
+            case 19:
+                c += (value[offset + 18] & 0xffL) << 24;
+            case 18:
+                c += (value[offset + 17] & 0xffL) << 16;
+            case 17:
+                c += (value[offset + 16] & 0xffL) << 8;
+            case 16:
+                b += word64At(value, offset + 8);
+                a += word64At(value, offset);
+                break;
+            case 15:
+                b += (value[offset + 14] & 0xffL) << 48;
+            case 14:
+                b += (value[offset + 13] & 0xffL) << 40;
+            case 13:
+                b += (value[offset + 12] & 0xffL) << 32;
+            case 12:
+                b += (value[offset + 11] & 0xffL) << 24;
+            case 11:
+                b += (value[offset + 10] & 0xffL) << 16;
+            case 10:
+                b += (value[offset + 9] & 0xffL) << 8;
+            case 9:
+                b += (value[offset + 8] & 0xffL);
+            case 8:
+                a += word64At(value, offset);
+                break;
+            case 7:
+                a += (value[offset + 6] & 0xffL) << 48;
+            case 6:
+                a += (value[offset + 5] & 0xffL) << 40;
+            case 5:
+                a += (value[offset + 4] & 0xffL) << 32;
+            case 4:
+                a += (value[offset + 3] & 0xffL) << 24;
+            case 3:
+                a += (value[offset + 2] & 0xffL) << 16;
+            case 2:
+                a += (value[offset + 1] & 0xffL) << 8;
+            case 1:
+                a += (value[offset + 0] & 0xffL);
         }
         return mix64(a, b, c);
     }
@@ -375,31 +376,31 @@ public final class HashUtil {
         c += length;
         int position = buf.position();
         switch (length - numGroups * 12) {
-        case 11:
-            c += (buf.get(position + 10)) << 24;
-        case 10:
-            c += (buf.get(position + 9) & 0xff) << 16;
-        case 9:
-            c += (buf.get(position + 8) & 0xff) << 8;
-        case 8:
-            b += getInt(buf, position + 4);
-            a += getInt(buf, position);
-            break;
-        case 7:
-            b += (buf.get(position + 6) & 0xff) << 16;
-        case 6:
-            b += (buf.get(position + 5) & 0xff) << 8;
-        case 5:
-            b += (buf.get(position + 4) & 0xff);
-        case 4:
-            a += getInt(buf, position);
-            break;
-        case 3:
-            a += (buf.get(position + 2) & 0xff) << 16;
-        case 2:
-            a += (buf.get(position + 1) & 0xff) << 8;
-        case 1:
-            a += (buf.get(position) & 0xff);
+            case 11:
+                c += (buf.get(position + 10)) << 24;
+            case 10:
+                c += (buf.get(position + 9) & 0xff) << 16;
+            case 9:
+                c += (buf.get(position + 8) & 0xff) << 8;
+            case 8:
+                b += getInt(buf, position + 4);
+                a += getInt(buf, position);
+                break;
+            case 7:
+                b += (buf.get(position + 6) & 0xff) << 16;
+            case 6:
+                b += (buf.get(position + 5) & 0xff) << 8;
+            case 5:
+                b += (buf.get(position + 4) & 0xff);
+            case 4:
+                a += getInt(buf, position);
+                break;
+            case 3:
+                a += (buf.get(position + 2) & 0xff) << 16;
+            case 2:
+                a += (buf.get(position + 1) & 0xff) << 8;
+            case 1:
+                a += (buf.get(position) & 0xff);
         }
 
         return mix32(a, b, c);
@@ -465,55 +466,55 @@ public final class HashUtil {
         c += length;
         int position = buf.position();
         switch (length - numGroups * 24) {
-        case 23:
-            c += ((long) buf.get(position + 22)) << 56;
-        case 22:
-            c += (buf.get(position + 21) & 0xffL) << 48;
-        case 21:
-            c += (buf.get(position + 20) & 0xffL) << 40;
-        case 20:
-            c += (buf.get(position + 19) & 0xffL) << 32;
-        case 19:
-            c += (buf.get(position + 18) & 0xffL) << 24;
-        case 18:
-            c += (buf.get(position + 17) & 0xffL) << 16;
-        case 17:
-            c += (buf.get(position + 16) & 0xffL) << 8;
-        case 16:
-            b += buf.getLong(position + 8);
-            a += buf.getLong(position);
-            break;
-        case 15:
-            b += (buf.get(position + 14) & 0xffL) << 48;
-        case 14:
-            b += (buf.get(position + 13) & 0xffL) << 40;
-        case 13:
-            b += (buf.get(position + 12) & 0xffL) << 32;
-        case 12:
-            b += (buf.get(position + 11) & 0xffL) << 24;
-        case 11:
-            b += (buf.get(position + 10) & 0xffL) << 16;
-        case 10:
-            b += (buf.get(position + 9) & 0xffL) << 8;
-        case 9:
-            b += (buf.get(position + 8) & 0xffL);
-        case 8:
-            a += buf.getLong(position);
-            break;
-        case 7:
-            a += (buf.get(position + 6) & 0xffL) << 48;
-        case 6:
-            a += (buf.get(position + 5) & 0xffL) << 40;
-        case 5:
-            a += (buf.get(position + 4) & 0xffL) << 32;
-        case 4:
-            a += (buf.get(position + 3) & 0xffL) << 24;
-        case 3:
-            a += (buf.get(position + 2) & 0xffL) << 16;
-        case 2:
-            a += (buf.get(position + 1) & 0xffL) << 8;
-        case 1:
-            a += (buf.get(position + 0) & 0xffL);
+            case 23:
+                c += ((long) buf.get(position + 22)) << 56;
+            case 22:
+                c += (buf.get(position + 21) & 0xffL) << 48;
+            case 21:
+                c += (buf.get(position + 20) & 0xffL) << 40;
+            case 20:
+                c += (buf.get(position + 19) & 0xffL) << 32;
+            case 19:
+                c += (buf.get(position + 18) & 0xffL) << 24;
+            case 18:
+                c += (buf.get(position + 17) & 0xffL) << 16;
+            case 17:
+                c += (buf.get(position + 16) & 0xffL) << 8;
+            case 16:
+                b += buf.getLong(position + 8);
+                a += buf.getLong(position);
+                break;
+            case 15:
+                b += (buf.get(position + 14) & 0xffL) << 48;
+            case 14:
+                b += (buf.get(position + 13) & 0xffL) << 40;
+            case 13:
+                b += (buf.get(position + 12) & 0xffL) << 32;
+            case 12:
+                b += (buf.get(position + 11) & 0xffL) << 24;
+            case 11:
+                b += (buf.get(position + 10) & 0xffL) << 16;
+            case 10:
+                b += (buf.get(position + 9) & 0xffL) << 8;
+            case 9:
+                b += (buf.get(position + 8) & 0xffL);
+            case 8:
+                a += buf.getLong(position);
+                break;
+            case 7:
+                a += (buf.get(position + 6) & 0xffL) << 48;
+            case 6:
+                a += (buf.get(position + 5) & 0xffL) << 40;
+            case 5:
+                a += (buf.get(position + 4) & 0xffL) << 32;
+            case 4:
+                a += (buf.get(position + 3) & 0xffL) << 24;
+            case 3:
+                a += (buf.get(position + 2) & 0xffL) << 16;
+            case 2:
+                a += (buf.get(position + 1) & 0xffL) << 8;
+            case 1:
+                a += (buf.get(position + 0) & 0xffL);
         }
 
         return mix64(a, b, c);
@@ -601,4 +602,24 @@ public final class HashUtil {
         c ^= b >>> 22;
         return c;
     }
+
+//    /**
+//     * HmacSHA256加密
+//     *
+//     * @param key  密钥
+//     * @param data 数据
+//     * @return 加密结果
+//     */
+//    public static String encode(String key, String data) {
+//        String code;
+//        try {
+//            Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
+//            SecretKeySpec secret_key = new SecretKeySpec(key.getBytes("UTF-8"), "HmacSHA256");
+//            sha256_HMAC.init(secret_key);
+//            code = Hex.toHexString(sha256_HMAC.doFinal(data.getBytes("UTF-8")));
+//        } catch (Exception e) {
+//            throw new RuntimeException("密码编码错误");
+//        }
+//        return code;
+//    }
 }

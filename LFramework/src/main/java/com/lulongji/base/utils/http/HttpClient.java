@@ -1,4 +1,4 @@
-package com.lulongji.base.http;
+package com.lulongji.base.utils.http;
 
 import com.lulongji.base.exception.CommonException;
 import org.apache.commons.lang.StringUtils;

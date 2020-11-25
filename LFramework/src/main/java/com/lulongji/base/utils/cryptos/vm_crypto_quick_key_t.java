@@ -25,6 +25,4 @@ public class vm_crypto_quick_key_t {
         this.rk = rk;
     }
 
-    ;
-
 }

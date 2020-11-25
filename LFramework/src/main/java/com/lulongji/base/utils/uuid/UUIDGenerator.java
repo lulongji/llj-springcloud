@@ -1,13 +1,7 @@
-package com.lulongji.base.uuid;
+package com.lulongji.base.utils.uuid;
 
 import java.net.InetAddress;
 
-/**
- * @author lulj
- * @version 1.0.0
- * @Description uuid
- * @date 2018年8月11日 下午7:28:33
- */
 public class UUIDGenerator {
     private static final int IP;
     private final static String sep = "";
@@ -47,8 +41,9 @@ public class UUIDGenerator {
      */
     protected short getCount() {
         synchronized (UUIDGenerator.class) {
-            if (counter < 0)
+            if (counter < 0) {
                 counter = 0;
+            }
             return counter++;
         }
     }

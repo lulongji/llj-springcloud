@@ -48,7 +48,7 @@ public final class IPAddrUtil {
             String localIp = localAddress();
             if (localIp == null || localIp.trim().length() == 0) {
                 IP_2_INT = -1;
-            } else
+            } else {
                 try {
                     final String[] addressBytes = ip.split("\\.");
                     int n = 0;
@@ -60,6 +60,7 @@ public final class IPAddrUtil {
                 } catch (Throwable t) {
                     IP_2_INT = -1;
                 }
+            }
         }
         return IP_2_INT;
     }
@@ -68,8 +69,9 @@ public final class IPAddrUtil {
         if (LOCAL_HOST == null) {
             try {
                 InetAddress InetAddr = InetAddress.getLocalHost();
-                if (InetAddr != null)
+                if (InetAddr != null) {
                     LOCAL_HOST = InetAddr.getHostName();
+                }
             } catch (UnknownHostException e) {
                 LOCAL_HOST = "";
             }

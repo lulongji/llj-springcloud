@@ -13,7 +13,7 @@ import java.util.GregorianCalendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static java.util.regex.Pattern.*;
+import static java.util.regex.Pattern.compile;
 
 /**
  * 日期处理工具类
@@ -33,8 +33,11 @@ public class DateUtil {
     // 时分秒毫秒....24小时制
 
     public static final String hour24HMSPattern = "yyyy-MM-dd HH:mm:ss";// 年月日
+
     // 时分秒24小时制
     public static final String hour24HMPattern = "yyyy-MM-dd HH:mm";// ....年月日
+    // 时分秒24小时制
+    public static final String hour24Pattern = "HH:mm:ss";// ....时分秒
     // 时分..24小时制
     public static final String hour24HPattern = "yyyy-MM-dd HH";// ........年月日
     // 时....24小时制
@@ -45,6 +48,10 @@ public class DateUtil {
 
 
     public static final String days = "dd";
+
+    public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    public static SimpleDateFormat sdfMinute = new SimpleDateFormat("yyyy-MM-dd HH:mm:00");
 
 
     public static final FastDateFormat simpleDateFormat_default = FastDateFormat.getInstance("yyyy/MM/dd");
@@ -196,6 +203,20 @@ public class DateUtil {
      */
     public static String getCurrentTime() {
         return format(new Date(), hour24HMSPattern);
+    }
+
+    /**
+     * 返回默认格式的当前时间上一秒戳字符串格式
+     */
+    public static String getCurrentTimeLastSecond() {
+        return format(new Date(System.currentTimeMillis() - 1000), hour24HMSPattern);
+    }
+
+    /**
+     * 返回默认格式的当前时间上N秒戳字符串格式
+     */
+    public static String getCurrentTimeLastNSecond(int second) {
+        return format(new Date(System.currentTimeMillis() - second * 1000), hour24HMSPattern);
     }
 
     /**
@@ -943,5 +964,163 @@ public class DateUtil {
         }
     }
 
+
+    //当前日期所在的分钟数
+    public static final String hour24HMSPatternMinute = "yyyy-MM-dd HH:mm:00";// 年月日
+    public static final String hour24HMSPatternMinuteEnd = "yyyy-MM-dd HH:mm:59";// 年月日
+
+    //当前日期所在的小时数
+    public static final String hour24HMSPatternHour = "yyyy-MM-dd HH:00:00";// 年月日
+    public static final String hour24HMSPatternHourEnd = "yyyy-MM-dd HH:59:59";// 年月日
+
+    //当前日期所在的天数
+    public static final String hour24HMSPatternDay = "yyyy-MM-dd 00:00:00";// 年月日
+    public static final String hour24HMSPatternDayEnd = "yyyy-MM-dd 23:59:59";// 年月日
+
+    /**
+     * 返回默认格式的当前时间戳字符串格式 所在的分钟数
+     */
+    public static String getCurrentTimeMinute() {
+        return format(new Date(), hour24HMSPatternMinute);
+    }
+
+    public static String getCurrentTimeMinuteEnd() {
+        return format(new Date(), hour24HMSPatternMinuteEnd);
+    }
+
+    /**
+     * 返回默认格式的当前时间戳字符串格式 所在的小时数
+     */
+    public static String getCurrentTimeHour() {
+        return format(new Date(), hour24HMSPatternHour);
+    }
+
+    public static String getCurrentTimeHourEnd() {
+        return format(new Date(), hour24HMSPatternHourEnd);
+    }
+
+    /**
+     * 返回默认格式的当前时间戳字符串格式 所在的天数
+     */
+    public static String getCurrentTimeDay() {
+        return format(new Date(), hour24HMSPatternDay);
+    }
+
+    public static String getCurrentTimeDayEnd() {
+        return format(new Date(), hour24HMSPatternDayEnd);
+    }
+
+
+    /**
+     * 判断当前时间是否在开始时间和结束时间之内
+     *
+     * @param dateStart
+     * @param dateEnd
+     * @return
+     * @throws ParseException
+     */
+    public static boolean compareTime(String dateStart, String dateEnd) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DateUtil.hour24Pattern);
+        Date dateS = null;
+        Date currTime = null;
+        Date dateE = null;
+        try {
+            dateS = simpleDateFormat.parse(dateStart);
+            dateE = simpleDateFormat.parse(dateEnd);
+            currTime = simpleDateFormat.parse(dateToStr(new Date(), 7));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return currTime.compareTo(dateS) >= 0 && dateE.compareTo(dateE) <= 0 ? true : false;
+    }
+
+    /**
+     * 比较当前时间是否大于指定时间 当前 > 指定 =true
+     *
+     * @param time
+     * @return
+     * @throws ParseException
+     */
+    public static boolean compareCurrTime(String time) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DateUtil.hour24HMSPattern);
+        Date dateS = null;
+        Date currTime = null;
+        try {
+            dateS = simpleDateFormat.parse(time);
+            currTime = simpleDateFormat.parse(dateToStr(new Date(), 12));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return currTime.compareTo(dateS) > 0 ? true : false;
+    }
+
+    /**
+     * 当前时间增加参数分钟数后的时间数据
+     *
+     * @return
+     */
+    public static String getCurrTimeAddMinutes(int minutes) {
+        Calendar nowTime = Calendar.getInstance();
+        nowTime.add(Calendar.MINUTE, minutes);
+        return sdf.format(nowTime.getTime());
+    }
+
+    /**
+     * 获取当前时间前几分钟数（整点分钟数）
+     *
+     * @param minutes
+     * @return
+     */
+    public static String getCurrTimeBeforeMinutes(int minutes) {
+        Calendar beforeTime = Calendar.getInstance();
+        beforeTime.add(Calendar.MINUTE, -minutes);
+        Date beforeD = beforeTime.getTime();
+        String before5 = sdfMinute.format(beforeD);
+        return before5;
+    }
+
+    /**
+     * 获取当前时间的上一天数据
+     *
+     * @param time
+     * @return
+     */
+    public static String getCurrLastDay(String time) {
+        Calendar calendar = Calendar.getInstance();
+        Date date = null;
+        try {
+            date = sdf.parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        calendar.setTime(date);
+        int day = calendar.get(Calendar.DATE);
+        //                      此处修改为+1则是获取后一天
+        calendar.set(Calendar.DATE, day - 1);
+
+        String lastDay = sdf.format(calendar.getTime());
+        return lastDay;
+    }
+
+
+    public static void main(String[] args) {
+//        Timestamp nowTime2 = Timestamp.valueOf(simpleDateFormat_date_time_line.format(new Date(System.currentTimeMillis() + 1000)));
+//        System.out.println(nowTime2);
+//        Timestamp nowTime3 = Timestamp.valueOf(simpleDateFormat_date_time_line.format(new Date(System.currentTimeMillis())));
+//        System.out.println(nowTime3);
+//        System.out.println(getCurrentTime());
+//        System.out.println(getCurrentTimeLastSecond());
+//        System.out.println(getCurrentTimeLastNSecond(100));
+
+//        System.out.println(getCurrentTimeMinute());
+//        System.out.println(getCurrentTimeMinuteEnd());
+//        System.out.println(getCurrentTimeHour());
+//        System.out.println(getCurrentTimeHourEnd());
+//        System.out.println(getCurrentTimeDay());
+        System.out.println(getCurrentTimeMinute());
+//        System.out.println(getCurrentTime());
+
+        System.out.println(getCurrLastDay("2020-01-01 19:00:01"));
+    }
 
 }

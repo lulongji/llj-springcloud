@@ -1,16 +1,19 @@
 package com.lulongji.base.utils.json;
 
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.util.StringUtils;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.serializer.JSONLibDataFormatSerializer;
 import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.lulongji.base.exception.BootException;
+import com.lulongji.base.exception.ExceptionEnum;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -21,6 +24,11 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
  * @version 1.0
  */
 public class FastjsonUtils {
+
+    /**
+     * 日志
+     */
+    private static Logger log = LoggerFactory.getLogger(FastjsonUtils.class);
 
     /**
      * 序列化设置
@@ -81,11 +89,31 @@ public class FastjsonUtils {
      * @throws Exception
      * @author lu 2016年7月1日
      */
-    public static String beanToJson(Object object) throws Exception {
+    public static String beanToJsonString(Object object) throws BootException {
         try {
             return JSON.toJSONString(object, config, features);
         } catch (Exception e) {
-            throw new Exception("An error occurred when the entity converted JSON:", e);
+            log.error("An error occurred when the entity converted JSON:", e);
+            throw new BootException(ExceptionEnum.JSON_CONVERTED_EXCEPTION_1001);
+        }
+    }
+
+    /**
+     * <p>
+     * 实体对象转换为JSON字符串
+     * </p>
+     *
+     * @param object
+     * @return
+     * @throws Exception
+     * @author lu 2016年7月1日
+     */
+    public static Object beanToJson(Object object) throws BootException {
+        try {
+            return JSON.toJSON(object);
+        } catch (Exception e) {
+            log.error("An error occurred when the entity converted JSON:", e);
+            throw new BootException(ExceptionEnum.JSON_CONVERTED_EXCEPTION_1001);
         }
     }
 
@@ -99,11 +127,12 @@ public class FastjsonUtils {
      * @throws Exception
      * @author lu 2016年7月12日
      */
-    public static String mapToJson(Map<String, Object> map) throws Exception {
+    public static String mapToJson(Map<String, Object> map) throws BootException {
         try {
             return JSON.toJSONString(map, config, features);
         } catch (Exception e) {
-            throw new Exception("Error converting map to JSON:", e);
+            log.error("An error occurred when the entity converted JSON:", e);
+            throw new BootException(ExceptionEnum.JSON_CONVERTED_EXCEPTION_1001);
         }
     }
 
@@ -117,11 +146,12 @@ public class FastjsonUtils {
      * @throws Exception
      * @author lu 2016年7月12日
      */
-    public static String listToJson(List<?> list) throws Exception {
+    public static String listToJson(List<?> list) throws BootException {
         try {
             return JSON.toJSONString(list, config, features);
         } catch (Exception e) {
-            throw new Exception("Error converting JSON from list:", e);
+            log.error("An error occurred when the entity converted JSON:", e);
+            throw new BootException(ExceptionEnum.JSON_CONVERTED_EXCEPTION_1001);
         }
     }
 
@@ -135,11 +165,12 @@ public class FastjsonUtils {
      * @throws Exception
      * @author lu 2016年7月12日
      */
-    public static String arrayToJson(Object[] array) throws Exception {
+    public static String arrayToJson(Object[] array) throws BootException {
         try {
             return JSON.toJSONString(array, config, features);
         } catch (Exception e) {
-            throw new Exception("array转换JSON时出错", e);
+            log.error("An error occurred when the entity converted JSON:", e);
+            throw new BootException(ExceptionEnum.JSON_CONVERTED_EXCEPTION_1001);
         }
     }
 
@@ -153,7 +184,7 @@ public class FastjsonUtils {
      * @throws Exception
      * @author lu 2015年12月31日
      */
-    public static <K, V> Map<K, V> jsonToMap(Class<K> keyClass, Class<V> valueClass, String jsonStr) throws Exception {
+    public static <K, V> Map<K, V> jsonToMap(Class<K> keyClass, Class<V> valueClass, String jsonStr) throws BootException {
         Map<K, V> returnMap = null;
         try {
             if (checkJsonStr(jsonStr)) {
@@ -161,7 +192,8 @@ public class FastjsonUtils {
                 });
             }
         } catch (Exception e) {
-            throw new Exception("Error converting MAP from JSON:", e);
+            log.error("An error occurred when the entity converted JSON:", e);
+            throw new BootException(ExceptionEnum.JSON_CONVERTED_EXCEPTION_1001);
         }
         return returnMap;
     }
@@ -182,14 +214,15 @@ public class FastjsonUtils {
      * @throws Exception
      * @author lu 2015年12月31日
      */
-    public static <T> List<T> jsonToList(Class<T> className, String jsonStr) throws Exception {
+    public static <T> List<T> jsonToList(Class<T> className, String jsonStr) throws BootException {
         List<T> returnList = null;
         try {
             if (null != className && checkJsonStr(jsonStr)) {
                 returnList = JSON.parseArray(jsonStr, className);
             }
         } catch (Exception e) {
-            throw new Exception("JSON conversion LIST <? An error occurred when >:", e);
+            log.error("An error occurred when the entity converted JSON:", e);
+            throw new BootException(ExceptionEnum.JSON_CONVERTED_EXCEPTION_1001);
         }
         return returnList;
     }
@@ -211,14 +244,15 @@ public class FastjsonUtils {
      * @throws Exception
      * @author lu 2016年7月12日
      */
-    public static <T> T jsonToBean(Class<T> className, String jsonStr) throws Exception {
+    public static <T> T jsonToBean(Class<T> className, String jsonStr) throws BootException {
         T returnObject = null;
         try {
             if (null != className && checkJsonStr(jsonStr)) {
                 returnObject = JSONObject.toJavaObject(JSONObject.parseObject(jsonStr), className);
             }
         } catch (Exception e) {
-            throw new Exception("Error converting JSON to entity:", e);
+            log.error("An error occurred when the entity converted JSON:", e);
+            throw new BootException(ExceptionEnum.JSON_CONVERTED_EXCEPTION_1001);
         }
         return returnObject;
     }
@@ -236,7 +270,7 @@ public class FastjsonUtils {
      * @author lu
      */
     public static <K, V> List<Map<K, V>> jsonToListMap(Class<K> keyClass, Class<V> valueClass, String jsonStr)
-            throws Exception {
+            throws BootException {
         List<Map<K, V>> returnListMap = null;
         try {
             if (null != keyClass && null != valueClass && checkJsonStr(jsonStr)) {
@@ -244,7 +278,8 @@ public class FastjsonUtils {
                 });
             }
         } catch (Exception e) {
-            throw new Exception("JSON is converted to a List<Map> exception:", e);
+            log.error("An error occurred when the entity converted JSON:", e);
+            throw new BootException(ExceptionEnum.JSON_CONVERTED_EXCEPTION_1001);
         }
         return returnListMap;
     }
@@ -260,14 +295,15 @@ public class FastjsonUtils {
      * @throws Exception
      * @author lu 2016年7月12日
      */
-    public static Object[] jsonToArray(Class<?> className, String jsonStr) throws Exception {
+    public static Object[] jsonToArray(Class<?> className, String jsonStr) throws BootException {
         Object[] returnArray = null;
         try {
             if (null != className && checkJsonStr(jsonStr)) {
                 returnArray = JSON.parseArray(jsonStr).toArray();
             }
         } catch (Exception e) {
-            throw new Exception("Error converting JSON to array:", e);
+            log.error("An error occurred when the entity converted JSON:", e);
+            throw new BootException(ExceptionEnum.JSON_CONVERTED_EXCEPTION_1001);
         }
         return returnArray;
     }

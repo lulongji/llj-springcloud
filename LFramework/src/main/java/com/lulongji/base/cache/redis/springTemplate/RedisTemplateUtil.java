@@ -13,10 +13,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
- * redis操作工具类
- *
  * @author lu
- * @version 1.0.0
  */
 public class RedisTemplateUtil {
 
@@ -55,6 +52,8 @@ public class RedisTemplateUtil {
             flag = true;
         } catch (Exception e) {
             logger.error("An exception occurred when adding data to redis，key=" + key + ",exception info:", e);
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
         }
         return flag;
     }
@@ -77,8 +76,28 @@ public class RedisTemplateUtil {
             logger.info("redis(" + key + ") not exist!");
         } catch (Exception e) {
             logger.error("An exception occurs when obtaining redis data,key=" + key + ". Exception information:", e);
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
         }
         return result;
+    }
+
+
+    /**
+     * @param key
+     * @param value
+     * @return
+     */
+    public static Object getAndSet(String key, Object value) {
+        Object object = null;
+        try {
+            object = redisTemplate.opsForValue().getAndSet(key, value);
+        } catch (Exception e) {
+            logger.error("An exception occurs when obtaining redis data,key=" + key + ". Exception information:", e);
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
+        }
+        return object;
     }
 
     /**
@@ -103,6 +122,8 @@ public class RedisTemplateUtil {
             logger.info("Insert into redis-hash(" + key + ":" + hashKey + ")success");
         } catch (Exception e) {
             logger.error("Add data exception to redis,[hash](key=" + key + ":" + hashKey + ", exception information:", e);
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
         }
         return flag;
     }
@@ -128,6 +149,8 @@ public class RedisTemplateUtil {
             logger.info("Insert into redis-hash(" + key + ")success");
         } catch (Exception e) {
             logger.error("Add data exception to redis([hash](key=" + key + "), exception information:", e);
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
         }
         return flag;
     }
@@ -150,6 +173,8 @@ public class RedisTemplateUtil {
             logger.info("redis[hash](" + key + ") not exist!");
         } catch (Exception e) {
             logger.error("Add data exception to redis,[hash](key=" + key + ":" + hashKey + ", exception information:", e);
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
         }
         return null;
     }
@@ -171,6 +196,8 @@ public class RedisTemplateUtil {
             flag = true;
         } catch (Exception e) {
             logger.error("An exception occurred while deleting redis data(key=(" + key + ")). Exception information:", e);
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
         }
         return flag;
     }
@@ -189,6 +216,8 @@ public class RedisTemplateUtil {
             flag = true;
         } catch (Exception e) {
             logger.error("An exception occurred while deleting redis data(keys=(" + keys + ")). Exception information:", e);
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
         }
         return flag;
     }
@@ -212,6 +241,8 @@ public class RedisTemplateUtil {
             flag = true;
         } catch (Exception e) {
             logger.error("An exception occurred to redis data{[list](key=" + key + ")}. Exception information:", e);
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
         }
         return flag;
     }
@@ -237,7 +268,15 @@ public class RedisTemplateUtil {
      * @throws Exception
      */
     public static List<?> getList(String key, int startIndex, int endIndex) {
-        return redisTemplate.opsForList().range(key, startIndex, endIndex);
+        List<?> list = null;
+        try {
+            list = redisTemplate.opsForList().range(key, startIndex, endIndex);
+        } catch (Exception e) {
+            logger.error("getList data{(key=" + key + ")}, exception information to redis:", e);
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
+        }
+        return list;
     }
 
     /**
@@ -248,7 +287,15 @@ public class RedisTemplateUtil {
      * @throws Exception
      */
     public static long expireKey(String key) {
-        return redisTemplate.getExpire(key);
+        Long expire = null;
+        try {
+            expire = redisTemplate.getExpire(key);
+        } catch (Exception e) {
+            logger.error("expireKey data{(key=" + key + ")}, exception information to redis:", e);
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
+        }
+        return expire;
     }
 
     /**
@@ -266,7 +313,9 @@ public class RedisTemplateUtil {
             logger.info("Insert into redis(" + key + ")success");
             flag = true;
         } catch (Exception e) {
-            logger.error("Add data{(key=" + key + ")}, exception information to redis:", e);
+            logger.error("setIncr data{(key=" + key + ")}, exception information to redis:", e);
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
         }
         return flag;
     }
@@ -279,7 +328,15 @@ public class RedisTemplateUtil {
      * @throws Exception
      */
     public static Boolean checkKeyIsExist(String key) {
-        return redisTemplate.hasKey(key);
+        boolean isFlag = false;
+        try {
+            isFlag = redisTemplate.hasKey(key);
+        } catch (Exception e) {
+            logger.error("checkKeyIsExist data{(key=" + key + ")}, exception information to redis:", e);
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
+        }
+        return isFlag;
     }
 
     /**
@@ -289,7 +346,16 @@ public class RedisTemplateUtil {
      * @desc 获取某一前缀下，所有的key的值key 值
      */
     public static Set<String> getKeysByPrefix(String pattern) {
-        return redisTemplate.keys(pattern);
+
+        Set<String> keysByPrefix = null;
+        try {
+            keysByPrefix = redisTemplate.keys(pattern);
+        } catch (Exception e) {
+            logger.error("getKeysByPrefix data{(pattern=" + pattern + ")}, exception information to redis:", e);
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
+        }
+        return keysByPrefix;
     }
 
     /**
@@ -299,7 +365,13 @@ public class RedisTemplateUtil {
      * @throws Exception
      */
     public static void delKeysByPrefix(String pattern) {
-        redisTemplate.delete(getKeysByPrefix(pattern));
+        try {
+            redisTemplate.delete(getKeysByPrefix(pattern));
+        } catch (Exception e) {
+            logger.error("delKeysByPrefix data{(pattern=" + pattern + ")}, exception information to redis:", e);
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
+        }
     }
 
     /**
@@ -308,25 +380,32 @@ public class RedisTemplateUtil {
      * @throws Exception
      */
     public static List<String> mGetRedisValue(final List<String> keys) {
-        return redisTemplate.execute((RedisCallback<List<String>>) connection -> {
-            byte[][] bKeys = new byte[keys.size()][];
-            for (int i = 0; i < keys.size(); i++) {
-                byte[] bKey = redisTemplate.getStringSerializer().serialize(keys.get(i));
-                bKeys[i] = bKey;
-            }
-            List<String> values = new ArrayList<>();
-            List<byte[]> bValues = connection.mGet(bKeys);
-            for (int i = 0; i < bValues.size(); i++) {
-                byte[] bValue = bValues.get(i);
-                String value = null;
-                if (bValue != null && bValue.length > 0) {
-                    value = redisTemplate.getStringSerializer().deserialize(bValue);
+        try {
+            return redisTemplate.execute((RedisCallback<List<String>>) connection -> {
+                byte[][] bKeys = new byte[keys.size()][];
+                for (int i = 0; i < keys.size(); i++) {
+                    byte[] bKey = redisTemplate.getStringSerializer().serialize(keys.get(i));
+                    bKeys[i] = bKey;
                 }
-                values.add(value);
-            }
-            logger.debug("getRedisValue key: {} value: {}", keys, values);
-            return values;
-        });
+                List<String> values = new ArrayList<>();
+                List<byte[]> bValues = connection.mGet(bKeys);
+                for (int i = 0; i < bValues.size(); i++) {
+                    byte[] bValue = bValues.get(i);
+                    String value = null;
+                    if (bValue != null && bValue.length > 0) {
+                        value = redisTemplate.getStringSerializer().deserialize(bValue);
+                    }
+                    values.add(value);
+                }
+                logger.debug("getRedisValue key: {} value: {}", keys, values);
+                return values;
+            });
+        } catch (Exception e) {
+            logger.error("redis#mGetRedisValue#exception:{}", e);
+            return null;
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
+        }
     }
 
 
@@ -337,28 +416,41 @@ public class RedisTemplateUtil {
      * @throws Exception
      */
     public static void LPush(final String key, final String value, final Long expire) {
-        redisTemplate.execute((RedisCallback<Object>) connection -> {
-            byte[] bkey = redisTemplate.getStringSerializer().serialize(key);
-            byte[] bvalue = redisTemplate.getStringSerializer().serialize(value);
-            connection.lRem(bkey, 0, bvalue);
-            connection.lPush(bkey, bvalue);
-            if (expire != null) {
-                connection.expire(bkey, expire);
-            }
-            logger.info("Lpush key: " + key + " value: " + value);
-            return null;
-        });
+        try {
+            redisTemplate.execute((RedisCallback<Object>) connection -> {
+                byte[] bkey = redisTemplate.getStringSerializer().serialize(key);
+                byte[] bvalue = redisTemplate.getStringSerializer().serialize(value);
+                connection.lRem(bkey, 0, bvalue);
+                connection.lPush(bkey, bvalue);
+                if (expire != null) {
+                    connection.expire(bkey, expire);
+                }
+                logger.info("Lpush key: " + key + " value: " + value);
+                return null;
+            });
+        } catch (Exception e) {
+            logger.error("redis#LPush#exception:{}", e);
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
+        }
     }
 
 
     public static void lRem(final String key, final int i, final String value) {
-        redisTemplate.execute((RedisCallback<Object>) connection -> {
-            byte[] bkey = redisTemplate.getStringSerializer().serialize(key);
-            byte[] bvalue = redisTemplate.getStringSerializer().serialize(value);
-            connection.lRem(bkey, i, bvalue);
-            logger.info("lRem key: " + key + " value: " + value);
-            return null;
-        });
+        try {
+            redisTemplate.execute((RedisCallback<Object>) connection -> {
+                byte[] bkey = redisTemplate.getStringSerializer().serialize(key);
+                byte[] bvalue = redisTemplate.getStringSerializer().serialize(value);
+                connection.lRem(bkey, i, bvalue);
+                logger.info("lRem key: " + key + " value: " + value);
+                return null;
+            });
+        } catch (Exception e) {
+            logger.error("redis#lRem#exception:{}", e);
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
+        }
+
     }
 
     /**
@@ -367,94 +459,159 @@ public class RedisTemplateUtil {
      * @throws Exception
      */
     public static Long LLen(final String key) {
-        return redisTemplate.execute((RedisCallback<Long>) connection -> {
-            byte[] bkey = redisTemplate.getStringSerializer().serialize(key);
-            if (connection.exists(bkey)) {
-                Long bvalue = connection.lLen(bkey);
-                logger.debug("getRedislLen key: " + key + " value: " + bvalue);
-                return bvalue;
-            } else
-                return null;
-        });
+        try {
+            return redisTemplate.execute((RedisCallback<Long>) connection -> {
+                byte[] bkey = redisTemplate.getStringSerializer().serialize(key);
+                if (connection.exists(bkey)) {
+                    Long bvalue = connection.lLen(bkey);
+                    logger.debug("getRedislLen key: " + key + " value: " + bvalue);
+                    return bvalue;
+                } else {
+                    return null;
+                }
+            });
+        } catch (Exception e) {
+            logger.error("redis#LLen#exception:{}", e);
+            return null;
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
+        }
     }
 
     public static List<String> lRange(final String key, final Long minLen, final Long maxLen) {
-        return redisTemplate.execute((RedisCallback<List<String>>) connection -> {
-            byte[] bkey = redisTemplate.getStringSerializer().serialize(key);
-            if (connection.exists(bkey)) {
-                List<byte[]> bvalueList = connection.lRange(bkey, minLen, maxLen);
-                List<String> sidList = null;
-                if (bvalueList != null && bvalueList.size() > 0) {
-                    sidList = Collections.synchronizedList(new ArrayList<String>());
-                    for (byte[] bValue : bvalueList) {
-                        String value = null;
-                        if (bValue != null && bValue.length > 0) {
-                            value = redisTemplate.getStringSerializer().deserialize(bValue);
-                            sidList.add(value);
-                            logger.debug("lRange key: " + key + " value: " + value);
+        try {
+            return redisTemplate.execute((RedisCallback<List<String>>) connection -> {
+                byte[] bkey = redisTemplate.getStringSerializer().serialize(key);
+                if (connection.exists(bkey)) {
+                    List<byte[]> bvalueList = connection.lRange(bkey, minLen, maxLen);
+                    List<String> sidList = null;
+                    if (bvalueList != null && bvalueList.size() > 0) {
+                        sidList = Collections.synchronizedList(new ArrayList<String>());
+                        for (byte[] bValue : bvalueList) {
+                            String value = null;
+                            if (bValue != null && bValue.length > 0) {
+                                value = redisTemplate.getStringSerializer().deserialize(bValue);
+                                sidList.add(value);
+                                logger.debug("lRange key: " + key + " value: " + value);
+                            }
                         }
                     }
-                }
 
-                return sidList;
-            } else
-                return null;
-        });
+                    return sidList;
+                } else {
+                    return null;
+                }
+            });
+        } catch (Exception e) {
+            logger.error("redis#lRange#exception:{}", e);
+            return null;
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
+        }
     }
 
     public static long getExpireTimeType(final String key, final TimeUnit timeUnit) {
-        long time = redisTemplate.getExpire(key, timeUnit);
-        return time;
+        Long expireTimeType = null;
+        try {
+            expireTimeType = redisTemplate.getExpire(key, timeUnit);
+        } catch (Exception e) {
+            logger.error("redis#getExpireTimeType#exception:{}", e);
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
+        }
+        return expireTimeType;
     }
 
 
     public static boolean setIfAbsent(final String key, final Serializable value) {
-        return redisTemplate.opsForValue().setIfAbsent(key, value);
+        boolean isFlag = false;
+        try {
+            isFlag = redisTemplate.opsForValue().setIfAbsent(key, value);
+        } catch (Exception e) {
+            logger.error("redis#setIfAbsent#exception:{}", e);
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
+        }
+        return isFlag;
     }
 
     public static Long incrRedis(final String key) {
-        RedisAtomicLong entityIdCounter = new RedisAtomicLong(key, redisTemplate.getConnectionFactory());
-        Long increment = entityIdCounter.getAndIncrement();
+        Long increment = null;
+        try {
+            RedisAtomicLong entityIdCounter = new RedisAtomicLong(key, redisTemplate.getConnectionFactory());
+            increment = entityIdCounter.getAndIncrement();
+        } catch (Exception e) {
+            logger.error("redis#incrRedis#exception:{}", e);
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
+        }
         return increment;
     }
 
     public static void expire(final String key, final long timeout, final TimeUnit unit) {
-        redisTemplate.expire(key, timeout, unit);
+        try {
+            redisTemplate.expire(key, timeout, unit);
+        } catch (Exception e) {
+            logger.error("redis#expire#exception:{}", e);
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
+        }
     }
 
     public static boolean setIfAbsent(final String key, final Serializable value, final long exptime) {
-        Boolean b = redisTemplate.execute((RedisCallback<Boolean>) connection -> {
-            RedisSerializer valueSerializer = redisTemplate.getValueSerializer();
-            RedisSerializer keySerializer = redisTemplate.getKeySerializer();
-            Object obj = connection.execute("set", keySerializer.serialize(key),
-                    valueSerializer.serialize(value),
-                    SafeEncoder.encode("NX"),
-                    SafeEncoder.encode("EX"),
-                    Protocol.toByteArray(exptime));
-            return obj != null;
-        });
-        return b;
+        try {
+            Boolean b = redisTemplate.execute((RedisCallback<Boolean>) connection -> {
+                RedisSerializer valueSerializer = redisTemplate.getValueSerializer();
+                RedisSerializer keySerializer = redisTemplate.getKeySerializer();
+                Object obj = connection.execute("set", keySerializer.serialize(key),
+                        valueSerializer.serialize(value),
+                        SafeEncoder.encode("NX"),
+                        SafeEncoder.encode("EX"),
+                        Protocol.toByteArray(exptime));
+                return obj != null;
+            });
+            return b;
+        } catch (Exception e) {
+            logger.error("redis#setIfAbsent#exception:{}", e);
+            return false;
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
+        }
     }
 
 
     public static Cursor<String> scan(String pattern, int limit) {
-        ScanOptions options = ScanOptions.scanOptions().match(pattern).count(limit).build();
-        RedisSerializer<String> redisSerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
-        return redisTemplate.executeWithStickyConnection(redisConnection -> new ConvertingCursor<>(redisConnection.scan(options), redisSerializer::deserialize));
+        try {
+            ScanOptions options = ScanOptions.scanOptions().match(pattern).count(limit).build();
+            RedisSerializer<String> redisSerializer = (RedisSerializer<String>) redisTemplate.getKeySerializer();
+            return redisTemplate.executeWithStickyConnection(redisConnection -> new ConvertingCursor<>(redisConnection.scan(options), redisSerializer::deserialize));
+        } catch (Exception e) {
+            logger.error("redis#scan#exception:{}", e);
+            return null;
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
+        }
     }
 
 
     public static Set<Object> scanSet(String pattern, int limit) {
-        return redisTemplate.execute((RedisCallback<Set<Object>>) connection -> {
-            Set<Object> binaryKeys = new HashSet<>();
-            Cursor<byte[]> cursor = connection.scan(new ScanOptions.ScanOptionsBuilder().match(pattern).count(limit).build());
-            while (cursor.hasNext()) {
-                binaryKeys.add(new String(cursor.next()));
-            }
-            return binaryKeys;
-        });
-    }
+        try {
+            return redisTemplate.execute((RedisCallback<Set<Object>>) connection -> {
+                Set<Object> binaryKeys = new HashSet<>();
+                Cursor<byte[]> cursor = connection.scan(new ScanOptions.ScanOptionsBuilder().match(pattern).count(limit).build());
+                while (cursor.hasNext()) {
+                    binaryKeys.add(new String(cursor.next()));
+                }
+                return binaryKeys;
+            });
+        } catch (Exception e) {
+            logger.error("redis#scanSet#exception:{}", e);
+            return null;
+        } finally {
+            RedisConnectionUtils.unbindConnection(redisTemplate.getConnectionFactory());
+        }
 
+    }
 
     public static RedisTemplate<String, Object> getRedisTemplate() {
         return redisTemplate;
