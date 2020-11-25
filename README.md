@@ -1,3 +1,9 @@
+# SpringBoot
+- Springboot 版本 2.1.6.RELEASE
+- 
+
+# SpringCloud
+
 # SpringCloud Alibaba
 
 ### framework-base
@@ -14,7 +20,7 @@
 引入
 
     <dependency>
-        <groupId>com.lulj</groupId>
+        <groupId>com.lul</groupId>
         <artifactId>framework-base</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </dependency>
