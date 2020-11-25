@@ -275,5 +275,6 @@
 
     <modules>
         <module>framework-base</module>
+        <module>llj-config</module>
     </modules>
 </project>
