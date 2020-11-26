@@ -36,6 +36,7 @@
 
 
     <dependencies>
+
         <!-- spring boot start -->
 
         <!--核心模块，包括自动配置支持、日志和YAM-->
@@ -311,6 +312,5 @@
         </plugins>
     </build>
     <modules>
-        <module>framework-base</module>
     </modules>
 </project>
